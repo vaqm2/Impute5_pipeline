@@ -122,7 +122,7 @@ workflow{
     | combine(Channel.fromPath(params.impute5_chunker)) \
     | chunk_regions() \
     | splitCsv(header:true) \
-    | map(row -> tuple(row.chr, row.bufferRegion, row.imputeRegion)) \
+    | map{row -> tuple(row.chr, row.bufferRegion, row.imputeRegion)} \
     | combine(Channel.fromPath(params.ref)) \
     | combine(Channel.fromPath(params.gt)) \
     | combine(Channel.fromPath(params.map)) \
