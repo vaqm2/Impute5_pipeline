@@ -96,7 +96,7 @@ process ligate_chunks {
     publishDir launchDir
 
     input:
-        path(chunks_to_ligate),
+        tuple path(chunks_to_ligate),
         val(out_prefix),
         val(chromosome),
         path(bcftools),
