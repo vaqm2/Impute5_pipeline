@@ -76,7 +76,7 @@ process impute_chunks {
         val(impute_region),
         path(reference_haplotypes),
         path(reference_haplotypes_index),
-        path(target_haploptypes),
+        path(target_haplotypes),
         path(target_haplotyoes_index),
         path(map),
         val(out_prefix),
