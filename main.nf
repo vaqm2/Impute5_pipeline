@@ -30,10 +30,10 @@ log.info """
 I M P U T E 5 - P I P E L I N E - N F
 ==================================================================================
 Reference Haplotypes: $params.ref
-Target Haplotypes: $params.gt
-Recombination Map: $params.map
-Chromosome: $params.chr
-Output Prefix: $params.out
+Target Haplotypes:    $params.gt
+Recombination Map:    $params.map
+Chromosome:           $params.chr
+Output Prefix:        $params.out
 ==================================================================================
 """
 
@@ -120,7 +120,7 @@ workflow{
     | combine(Channel.fromPath(params.chr)) \
     | combine(Channel.of(params.out)) \
     | combine(Channel.fromPath(params.impute5_chunker)) \
-    | chunk_regions() \
+    | chunk_regions \
     | splitCsv(header:true) \
     | map{row -> tuple(row.chr, row.bufferRegion, row.imputeRegion)} \
     | combine(Channel.fromPath(params.ref)) \
@@ -128,11 +128,11 @@ workflow{
     | combine(Channel.fromPath(params.map)) \
     | combine(Channel.of(params.out)) \
     | combine(Channel.fromPath(params.impute5_path)) \
-    | impute_chunks() \
+    | impute_chunks \
     | collect \
     | combine(Channel.of(params.out)) \
     | combine(Channel.of(params.chr)) \
     | combine(Channel.fromPath(bcftools_path)) \
     | combine(Channel.fromPath(tabix_path)) \
-    | ligate_chunks()
+    | ligate_chunks
 }
