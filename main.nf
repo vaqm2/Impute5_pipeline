@@ -103,7 +103,7 @@ process ligate_chunks {
     publishDir launchDir
 
     input:
-        tuple path("*.vcf.gz"),
+        tuple path(vcf_files),
         val(out_prefix),
         val(chromosome),
         path(bcftools),
@@ -141,6 +141,7 @@ workflow {
     | combine(Channel.fromPath(params.impute5_path)) \
     | impute_chunks \
     | collect \
+    | toList \
     | combine(Channel.of(params.out)) \
     | combine(Channel.of(params.chr)) \
     | combine(Channel.fromPath(params.bcftools_path)) \
