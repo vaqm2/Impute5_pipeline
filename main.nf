@@ -63,7 +63,7 @@ process chunk_regions {
         --o ${out_prefix}_chr${chromosome}.chunks.txt
 
     echo -e "chr,bufferRegion,imputeRegion" > ${out_prefix}_chr${chromosome}.chunks.csv
-    awk '{print \$2","\$3","\$4"}' ${out_prefix}_chr${chromosome}.chunks.txt >> ${out_prefix}_chr${chromosome}.chunks.csv
+    awk \'{print \$2","\$3","\$4}\' ${out_prefix}_chr${chromosome}.chunks.txt >> ${out_prefix}_chr${chromosome}.chunks.csv
     """
 }
 
