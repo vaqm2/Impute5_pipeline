@@ -117,7 +117,7 @@ process ligate_chunks {
 workflow {
     Channel.fromPath(params.ref) \
     | combine(Channel.fromPath(params.gt)) \
-    | combine(Channel.fromPath(params.chr)) \
+    | combine(Channel.of(params.chr)) \
     | combine(Channel.of(params.out)) \
     | combine(Channel.fromPath(params.impute5_chunker_path)) \
     | chunk_regions \
