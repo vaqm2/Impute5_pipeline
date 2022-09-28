@@ -115,7 +115,7 @@ process ligate_chunks {
 }
 
 workflow {
-    Channel.of(params.ref) \
+    Channel.fromPath(params.ref) \
     | combine(Channel.fromPath(params.gt)) \
     | combine(Channel.fromPath(params.chr)) \
     | combine(Channel.of(params.out)) \
