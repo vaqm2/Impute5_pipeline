@@ -42,7 +42,7 @@ process chunk_regions {
 
     input:
         tuple path(reference_haplotypes), 
-        path(target_haploptypes),
+        path(target_haplotypes),
         val(chromosome),
         val(out_prefix),
         path(impute5_chunker)
@@ -122,7 +122,7 @@ workflow {
     | combine(Channel.fromPath(params.impute5_chunker_path)) \
     | chunk_regions \
     | splitCsv(header:true) \
-    | map{row -> tuple(row.chr, row.bufferRegion, row.imputeRegion)} \
+    | map{ row -> tuple(row.chr, row.bufferRegion, row.imputeRegion) } \
     | combine(Channel.fromPath(params.ref)) \
     | combine(Channel.fromPath(params.gt)) \
     | combine(Channel.fromPath(params.map)) \
