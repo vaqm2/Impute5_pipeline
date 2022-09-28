@@ -41,8 +41,10 @@ process chunk_regions {
     label 'low_mem'
 
     input:
-        tuple path(reference_haplotypes), 
+        tuple path(reference_haplotypes),
+        path(reference_haplotypes_index),
         path(target_haplotypes),
+        path(target_haplotypes_index),
         val(chromosome),
         val(out_prefix),
         path(impute5_chunker)
@@ -69,8 +71,10 @@ process impute_chunks {
         tuple val(chromosome),
         val(buffer_region),
         val(impute_region),
-        path(reference_haplotypes), 
+        path(reference_haplotypes),
+        path(reference_haplotypes_index),
         path(target_haploptypes),
+        path(target_haplotyoes_index),
         path(map),
         val(out_prefix),
         path(impute5)
@@ -116,7 +120,9 @@ process ligate_chunks {
 
 workflow {
     Channel.fromPath(params.ref) \
+    | combine(Channel.fromPath("${params.ref}.tbi")) \
     | combine(Channel.fromPath(params.gt)) \
+    | combine(Channel.fromPath("${params.gt}.tbi")) \
     | combine(Channel.of(params.chr)) \
     | combine(Channel.of(params.out)) \
     | combine(Channel.fromPath(params.impute5_chunker_path)) \
@@ -124,7 +130,9 @@ workflow {
     | splitCsv(header:true) \
     | map{ row -> tuple(row.chr, row.bufferRegion, row.imputeRegion) } \
     | combine(Channel.fromPath(params.ref)) \
+    | combine(Channel.fromPath("${params.ref}.tbi")) \
     | combine(Channel.fromPath(params.gt)) \
+    | combine(Channel.fromPath("${params.gt}.tbi")) \
     | combine(Channel.fromPath(params.map)) \
     | combine(Channel.of(params.out)) \
     | combine(Channel.fromPath(params.impute5_path)) \
