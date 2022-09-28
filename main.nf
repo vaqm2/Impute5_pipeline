@@ -103,7 +103,7 @@ process ligate_chunks {
     publishDir launchDir
 
     input:
-        tuple path(chunks_to_ligate),
+        tuple path("*.vcf.gz"),
         val(out_prefix),
         val(chromosome),
         path(bcftools),
