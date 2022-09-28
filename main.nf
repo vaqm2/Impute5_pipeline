@@ -68,7 +68,7 @@ process chunk_regions {
 }
 
 process impute_chunks {
-    label 'high_mem'
+    label 'big_mem'
 
     input:
         tuple val(chromosome),
