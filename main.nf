@@ -1,5 +1,7 @@
 #!/usr/bin/env nextflow
 
+nextflow.enable.dsl = 2
+
 def help_msg() {
     log.info """
     Nextflow pipeline to impute data in VCF format using Impute5
