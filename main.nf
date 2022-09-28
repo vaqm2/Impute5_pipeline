@@ -132,7 +132,7 @@ workflow {
     | collect \
     | combine(Channel.of(params.out)) \
     | combine(Channel.of(params.chr)) \
-    | combine(Channel.fromPath(bcftools_path)) \
-    | combine(Channel.fromPath(tabix_path)) \
+    | combine(Channel.fromPath(params.bcftools_path)) \
+    | combine(Channel.fromPath(params.tabix_path)) \
     | ligate_chunks
 }
