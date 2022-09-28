@@ -87,7 +87,7 @@ process impute_chunks {
 
     script:
     """
-    ./impute5 --h $reference_haplotypes \
+    ./impute5_1.1.5_static --h $reference_haplotypes \
         --g $target_haplotypes \
         --m $map \
         --r $impute_region \
