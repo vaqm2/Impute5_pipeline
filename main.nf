@@ -29,15 +29,16 @@ log.info """
 ==================================================================================
 I M P U T E 5 - P I P E L I N E - N F
 ==================================================================================
-Reference Haplotypes: $params.ref
-Target Haplotypes:    $params.gt
-Recombination Map:    $params.map
-Chromosome:           $params.chr
-Output Prefix:        $params.out
+Impute5 Reference Haplotypes:  $params.impute5_reference
+Minimac4 Reference Haplotypes: $params.minimac4_reference
+Target Haplotypes:             $params.gt
+Recombination Map:             $params.map
+Chromosome:                    $params.chr
+Output Prefix:                 $params.out
 ==================================================================================
 """
 
-ref_index = params.ref + ".tbi"
+ref_index = params.impute5_reference + ".tbi"
 gt_index = params.gt + ".tbi"
 
 process chunk_regions {
@@ -77,7 +78,7 @@ process impute_chunks {
         path(reference_haplotypes),
         path(reference_haplotypes_index),
         path(target_haplotypes),
-        path(target_haplotyoes_index),
+        path(target_haplotypes_index),
         path(map),
         val(out_prefix),
         path(impute5)
@@ -121,9 +122,34 @@ process ligate_chunks {
     """
 }
 
+process minimac_impute {
+    label 'big_mem'
+    publishDir launchDir
+
+    input:
+        tuple path(reference_haplotypes),
+        path(target_haplotypes),
+        val(chromosome),
+        val(out_prefix),
+        path(minimac4_path)
+
+    output:
+        path("${out_prefix}_chr${chromosome}.*")
+    
+    script:
+    """
+    ./minimac4 --refHaps $reference_haplotypes \
+        --haps $target_haplotypes \
+        --prefix ${out_prefix}_chr${chromosome} \
+        --format GT,GP,DS \
+        --log \
+        --noPhoneHome
+    """
+}
+
 workflow {
-    Channel.fromPath(params.ref) \
-    | combine(Channel.fromPath(ref_index)) \
+    Channel.fromPath(params.impute5_reference) \
+    | combine(Channel.fromPath(impute5_reference_index)) \
     | combine(Channel.fromPath(params.gt)) \
     | combine(Channel.fromPath(gt_index)) \
     | combine(Channel.of(params.chr)) \
@@ -147,4 +173,11 @@ workflow {
     | combine(Channel.fromPath(params.bcftools_path)) \
     | combine(Channel.fromPath(params.tabix_path)) \
     | ligate_chunks
+
+    Channel.fromPath(params.minimac4_reference) \
+    | combine(Channel.fromPath(params.gt)) \
+    | combine(Channel.of(params.chr)) \
+    | combine(Channel.of(params.out)) \
+    | combine(Channel.of(params.minimac4_path)) \
+    | minimac_impute
 }
