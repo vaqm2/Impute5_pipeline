@@ -11,7 +11,8 @@ def help_msg() {
 
     OPTIONS:
 
-    --ref <ref.vcf.gz> [Gzipp'ed Tab indexed VCF file of reference haplotypes]
+    --impute5_reference <ref.vcf.gz> [Gzipp'ed Tab indexed VCF file of reference haplotypes]
+    --minimac4_reference [.m3VCF for minimac4]
     --gt <target.vcf.gz> [Gzipp'ed Tab indexed VCF file of phased target haplotypes]
     --map <chr21.gmap.txt.gz> [Recombination Map]
     --chr <21> [Chromosome to Impute]
