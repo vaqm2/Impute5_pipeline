@@ -150,7 +150,7 @@ process minimac_impute {
 
 workflow {
     Channel.fromPath(params.impute5_reference) \
-    | combine(Channel.fromPath(impute5_reference_index)) \
+    | combine(Channel.fromPath(ref_index)) \
     | combine(Channel.fromPath(params.gt)) \
     | combine(Channel.fromPath(gt_index)) \
     | combine(Channel.of(params.chr)) \
